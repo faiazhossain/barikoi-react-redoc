@@ -43,6 +43,12 @@ info:
     send via Insomnia or Postman to see what the requests and responses look
     like.
 
+    ## API Usage Clarification
+
+    A single API request and a single API call are not always the same. A single API request to the server might call multiple APIs. An API might depend on other internal APIs to deliver the desired response. The number of call depends on the number of parameters of a request and the number of internal API calls needed to make to provide the desired response. For instance, A single request to Rupantor API results in two API calls since Rupantor API uses geocode API to operate. Routing API follows the same formalities as Rupantor.
+    For any query or tech support please mail at support@barikoi.com
+
+
 
     ## Contact Us
 
@@ -93,7 +99,7 @@ paths:
       tags:
         - Reverse Geocoding
       summary: Reverse Geocoding API
-      description: This API initially returns id, address, area, city, distance_within_meters without any additional call
+      description: This API initially returns id, address, area, city, distance_within_meters without any additional call.For each request of Reverse Geocoding with all parameter 11 API call is counted.
       parameters:
         - $ref: "#/"
         - $ref: "#/components/parameters/longitudeParam"
@@ -113,6 +119,44 @@ paths:
         - lang: Curl
           source: >-
             curl --location --request GET 'https://barikoi.xyz/v2/api/search/reverse/geocode?longitude=90.36744611263278&latitude=23.81970957278533&district=true&post_code=true&country=true&sub_district=true&union=true&pauroshova=true&location_type=true&division=true&address=true&area=true&api_key=<BARIKOI_API_KEY>'
+      responses:
+        "200":
+          $ref: "#/components/responses/rev_geo_success"
+        "400":
+          $ref: "#/components/responses/missing_parameter"
+        "401":
+          $ref: "#/components/responses/no_registered_key"
+        "402":
+          $ref: "#/components/responses/payment_exception"
+        "429":
+          $ref: "#/components/responses/api_limit_exceeded"
+
+  /search/reverse/geocode/server:
+    get:
+      operationId: revgeos
+      tags:
+        - Reverse Geocoding
+      summary: Reverse Geocoding API(server)
+      description: This API initially returns id, address, area, city, distance_within_meters without any additional call.For each request of Reverse Geocoding with all parameter 11 API call is counted.
+      parameters:
+        - $ref: "#/"
+        - $ref: "#/components/parameters/longitudeParam"
+        - $ref: "#/components/parameters/latitudeParam"
+        - $ref: "#/components/parameters/districtParam"
+        - $ref: "#/components/parameters/post_codeParam"
+        - $ref: "#/components/parameters/countryParam"
+        - $ref: "#/components/parameters/sub_districtParam"
+        - $ref: "#/components/parameters/unionParam"
+        - $ref: "#/components/parameters/pauroshovaParam"
+        - $ref: "#/components/parameters/location_typeParam"
+        - $ref: "#/components/parameters/divisionParam"
+        - $ref: "#/components/parameters/addressParam"
+        - $ref: "#/components/parameters/areaParam"
+        - $ref: "#/components/parameters/banglaParam"
+      x-code-samples:
+        - lang: Curl
+          source: >-
+            curl --location --request GET 'https://barikoi.xyz/v2/api/search/reverse/server?longitude=90.36744611263278&latitude=23.81970957278533&district=true&post_code=true&country=true&sub_district=true&union=true&pauroshova=true&location_type=true&division=true&address=true&area=true&api_key=<BARIKOI_API_KEY>'
       responses:
         "200":
           $ref: "#/components/responses/rev_geo_success"
